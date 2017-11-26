@@ -1,5 +1,15 @@
 const express = require('express');
 const line = require('@line/bot-sdk');
+global.fetch = require('node-fetch');
+const { default: Unsplash, toJson } = require('unsplash-js');
+
+const unsplash = new Unsplash({
+  applicationId:
+    'aa3680a0ca835e15851c397f6e77140ab46a379951e35a191a82b78bd6239bf2',
+  secret: process.env.UNSPLASH_SECRET,
+  callbackUrl: '',
+});
+
 const port = process.env.PORT || 3000;
 
 const config = {
@@ -24,12 +34,37 @@ function handleEvent(event) {
     return Promise.resolve(null);
   }
 
-  let text = "Sorry, I don't understand...";
-  if (event.message.text.match(/rain/i)) {
-    text = "How should I know if it will rain? Jerk."
-  }
+  const text = "No results found";
+  // if (event.message.text.match(/rain/i)) {
+  //   text = 'How should I know if it will rain? Jerk.';
+  // }
 
-  return client.replyMessage(event.replyToken, { type: 'text', text });
+  return unsplash.search
+    .all(event.message.text.split(' ')[0], 0, 1)
+    .then(toJson)
+    .then(json => {
+      let responses = [{ type: 'text', text }];
+      if (json.photos.results.length > 0) {
+        const {
+          user,
+          links: { html: pageLink },
+          urls,
+        } = json.photos.results[0];
+        responses = [
+          {
+            type: 'image',
+            previewImageUrl: urls.thumb,
+            originalContentUrl: urls.small,
+          },
+          {
+            type: 'text',
+            text: `By ${user.name || user.username} on Unsplash. ${pageLink}`,
+          },
+        ];
+      }
+
+      return client.replyMessage(event.replyToken, responses);
+    });
 }
 
 app.listen(port, () => {
