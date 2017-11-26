@@ -34,7 +34,7 @@ function handleEvent(event) {
     return Promise.resolve(null);
   }
 
-  const text = "No results found";
+  const text = 'No results found';
   // if (event.message.text.match(/rain/i)) {
   //   text = 'How should I know if it will rain? Jerk.';
   // }
@@ -50,6 +50,8 @@ function handleEvent(event) {
           links: { html: pageLink },
           urls,
         } = json.photos.results[0];
+        const attribution =
+          '?utm_source=Line+Photo+Chat&utm_medium=referral&utm_campaign=api-credit';
         responses = [
           {
             type: 'image',
@@ -58,7 +60,11 @@ function handleEvent(event) {
           },
           {
             type: 'text',
-            text: `By ${user.name || user.username} on Unsplash. ${pageLink}`,
+            text: `See full size photo at ${pageLink}${
+              attribution
+            }\n<Photo by ${user.name || user.username}/Unsplash (${
+              user.links.html
+            }${attribution})>`,
           },
         ];
       }

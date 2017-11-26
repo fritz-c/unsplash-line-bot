@@ -6,6 +6,7 @@
   "repository": "",
   "scripts": {
     "start": "[ -e .env ] && export $(cat .env | xargs) ; nodemon index.js",
+    "deploy": "now --public -e LINE_CHANNEL_SECRET=@line_channel_secret -e UNSPLASH_SECRET=@unsplash_secret",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
