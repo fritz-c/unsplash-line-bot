@@ -1,0 +1,19 @@
+{
+  "name": "line-bot",
+  "version": "1.0.0",
+  "description": "Line Bot example for NodeJS Festival",
+  "main": "index.js",
+  "repository": "",
+  "scripts": {
+    "start": "[ -e .env ] && export $(cat .env | xargs) ; nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@line/bot-sdk": "^5.0.1",
+    "express": "^4.16.2",
+    "nodemon": "^1.12.1"
+  }
+}
