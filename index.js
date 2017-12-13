@@ -35,10 +35,6 @@ function handleEvent(event) {
   }
 
   const text = 'No results found';
-  // if (event.message.text.match(/rain/i)) {
-  //   text = 'How should I know if it will rain? Jerk.';
-  // }
-
   return unsplash.search
     .all(event.message.text.split(' ')[0], 0, 1)
     .then(toJson)
@@ -60,11 +56,8 @@ function handleEvent(event) {
           },
           {
             type: 'text',
-            text: `See full size photo at ${pageLink}${
-              attribution
-            }\n<Photo by ${user.name || user.username}/Unsplash (${
-              user.links.html
-            }${attribution})>`,
+            text: `See full size photo at ${pageLink}${attribution}\n<Photo by ${user.name ||
+              user.username}/Unsplash (${user.links.html}${attribution})>`,
           },
         ];
       }
